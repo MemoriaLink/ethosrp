@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklep | Ethos RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --silver: #e0e0e0;
+            --accent: #a855f7; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(168, 85, 247, 0.2);
+            --locked: #555;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- TŁO I CYBER-KOMPAS (Rotating Data Ring) --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #151515 0%, #000 100%);
+            z-index: -2;
+        }
+
+        .cyber-kompas {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotateCompass 50s linear infinite;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        @keyframes rotateCompass {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- NAVBAR --- */
+        .ethos-navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100px;
+            z-index: 1000; display: flex; align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px);
+        }
+
+        .nav-glow-bar {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .nav-content {
+            width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 60px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .nav-logo img { height: 75px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.4)); transition: 0.3s; }
+        .nav-logo img:hover { transform: scale(1.05); }
+
+        .nav-links { list-style: none; display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: white;
+            font-family: 'Syncopate', sans-serif; font-size: 0.7rem;
+            letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        .active-link { color: var(--accent) !important; text-shadow: 0 0 10px var(--accent); }
+
+        .btn-discord { 
+            font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; 
+            border: 1px solid var(--accent); color: white; text-decoration: none; 
+            transition: 0.4s; background: rgba(168, 85, 247, 0.05); 
+        }
+        .btn-discord:hover { background: var(--accent); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+
+        /* --- SEKACJA SKLEPU --- */
+        .shop-container {
+            padding: 180px 10% 100px;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .shop-container h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .shop-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            letter-spacing: 5px;
+            color: var(--silver);
+            margin-bottom: 60px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- KARTA PRODUKTU --- */
+        .shop-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 50px 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden; /* Ważne dla odznaki promo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .shop-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
+        }
+
+        /* --- ODZNAKA PROMO --- */
+        .promo-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 40px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.6rem;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px var(--accent);
+            font-weight: bold;
+            z-index: 5;
+        }
+
+        .shop-card h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        /* --- CENY --- */
+        .price-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #666;
+            font-size: 0.9rem;
+            font-family: 'Syncopate', sans-serif;
+            margin-bottom: 5px;
+        }
+
+        .price-tag {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2.2rem;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        /* --- LISTA CECH --- */
+        .shop-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .shop-features li {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .shop-features li::before {
+            content: '●';
+            color: var(--accent);
+            font-size: 0.6rem;
+        }
+
+        /* --- PRZYCISK --- */
+        .btn-buy {
+            width: 100%;
+            padding: 18px;
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px solid var(--accent);
+            color: white;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.4s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-buy:hover {
+            background: var(--accent);
+            box-shadow: 0 0 30px var(--accent);
+            transform: scale(1.02);
+        }
+
+        footer {
+            padding: 50px;
+            text-align: center;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.6rem;
+            color: #444;
+            letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper"></div>
+    <div class="cyber-kompas"></div>
+
+    <nav class="ethos-navbar">
+        <div class="nav-glow-bar"></div>
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="ethos-removebg-preview.png" alt="Ethos RP">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Start</a></li>
+                <li><a href="regulamin.html">Regulamin</a></li>
+                <li><a href="regulamin-dc.html">Regulamin Discord</a></li>
+                <li><a href="sklep.html" class="active-link">Sklep</a></li>
+            </ul>
+            <a href="https://discord.gg/j2C7JpgPRK" target="_blank" class="btn-discord">DISCORD</a>
+        </div>
+    </nav>
+
+    <main class="shop-container">
+        <h1>SKLEP</h1>
+        <span class="shop-subtitle">WESPRZYJ PROJEKT PRZED STARTEM (EDYCJA LIMITOWANA)</span>
+
+        <div class="shop-grid">
+            
+            <div class="shop-card">
+                <div class="promo-badge">PROMO!</div>
+                <h3>FUNDATOR PASS</h3>
+                <div class="price-container">
+                    <span class="old-price">60.00 PLN</span>
+                    <span class="price-tag">39.99 PLN</span>
+                </div>
+                <ul class="shop-features">
+                    <li>Unikalna ranga "FUNDATOR" na Discordzie</li>
+                    <li>Dostęp do limitowanych ubrań w butiku</li>
+                    <li>Specjalna plakietka na czacie [F]</li>
+                    <li>Dedykowana animacja powitania</li>
+                    <li>Priorytetowe wsparcie techniczne</li>
+                </ul>
+                <a href="#" class="btn-buy">WYBIERZ PAKIET</a>
+            </div>
+
+            <div class="shop-card">
+                <div class="promo-badge">PROMO!</div>
+                <h3>CUSTOMOWA TABLICA</h3>
+                <div class="price-container">
+                    <span class="old-price">40.00 PLN</span>
+                    <span class="price-tag">19.99 PLN</span>
+                </div>
+                <ul class="shop-features">
+                    <li>Rezerwacja własnego napisu (8 znaków)</li>
+                    <li>Tablica przypisana do Twojego konta</li>
+                    <li>Możliwość nałożenia na dowolne auto</li>
+                    <li>Unikalne obramowanie tablicy</li>
+                    <li>Prestiż rozpoznawalności na ulicach</li>
+                </ul>
+                <a href="#" class="btn-buy">ZAREZERWUJ NAPIS</a>
+            </div>
+
+            <div class="shop-card">
+                <div class="promo-badge">PROMO!</div>
+                <h3>ZŁOTY NUMER</h3>
+                <div class="price-container">
+                    <span class="old-price">30.00 PLN</span>
+                    <span class="price-tag">14.99 PLN</span>
+                </div>
+                <ul class="shop-features">
+                    <li>Złoty numer telefonu (np. 111-222)</li>
+                    <li>Łatwy kontakt dla Twoich klientów</li>
+                    <li>Zwiększona pojemność skrzynki SMS</li>
+                    <li>Unikalna ikona telefonu w interfejsie</li>
+                    <li>Wcześniejszy dostęp do aplikacji mobilnych</li>
+                </ul>
+                <a href="#" class="btn-buy">WYBIERZ NUMER</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 ETHOS RP. WSZYSTKIE PRAWA ZASTRZEŻONE.
+    </footer>
+
+</body>
+</html>

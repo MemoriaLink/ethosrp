@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethos RP | Elite Experience</title>
+    <title>Ethos RP | Gdzie jakość spotyka wolność</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -25,7 +25,35 @@
             scroll-behavior: smooth;
         }
 
-        /* --- TŁO --- */
+        /* --- LANDING GATE (ODLICZANIE) --- */
+        #landing-gate {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .countdown-container { text-align: center; margin-bottom: 50px; z-index: 10; }
+        .countdown-label { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; letter-spacing: 10px; color: var(--accent); margin-bottom: 20px; display: block; }
+        #timer { font-family: 'Syncopate', sans-serif; font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 5px; text-shadow: 0 0 20px rgba(168, 85, 247, 0.5); }
+
+        .init-btn {
+            background: rgba(168, 85, 247, 0.05); border: 1px solid var(--accent); color: white;
+            padding: 20px 40px; font-family: 'Syncopate', sans-serif; font-size: 0.7rem;
+            letter-spacing: 5px; cursor: pointer; transition: 0.4s; z-index: 10;
+        }
+        .init-btn:hover { background: var(--accent); box-shadow: 0 0 30px var(--accent); transform: scale(1.05); }
+
+        .glitch-flash { animation: flash 0.2s steps(2) infinite; }
+        @keyframes flash { 0% { opacity: 1; background: var(--accent); } 50% { opacity: 0.5; background: #000; } 100% { opacity: 1; } }
+
+        /* --- WRAPPER TREŚCI --- */
+        #main-wrapper { opacity: 0; visibility: hidden; transition: opacity 1.5s ease-in; }
+        #main-wrapper.visible { opacity: 1; visibility: visible; }
+
+        /* --- TŁO I CYBER-KOMPAS --- */
         .background-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -59,6 +87,27 @@
             background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px);
         }
 
+        /* --- NOWY ANIMOWANY PASEK --- */
+        .nav-glow-bar {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--accent) 50%, 
+                transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
         .nav-content {
             width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 60px;
             display: flex; justify-content: space-between; align-items: center;
@@ -72,189 +121,293 @@
             font-family: 'Syncopate', sans-serif; font-size: 0.7rem;
             letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
         }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover:not(.locked-link) { color: var(--accent); }
 
-        .nav-right-side { display: flex; align-items: center; gap: 30px; }
-        .wl-status-box { text-align: right; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 30px; }
-        .wl-label { font-family: 'Syncopate', sans-serif; font-size: 0.55rem; color: var(--locked); }
-        .wl-value { font-family: 'Syncopate', sans-serif; font-size: 0.75rem; color: var(--silver); display: flex; align-items: center; gap: 8px; }
-        .status-dot { width: 8px; height: 8px; background-color: var(--silver); border-radius: 50%; animation: pulseStatus 2s infinite; }
+        .locked-link {
+            color: var(--locked) !important;
+            cursor: not-allowed;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .locked-link::after { content: '🔒'; font-size: 0.6rem; opacity: 0.5; }
 
-        .btn-discord { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; border: 1px solid var(--accent); color: white; text-decoration: none; transition: 0.4s; }
+        .btn-discord { 
+            font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; 
+            border: 1px solid var(--accent); color: white; text-decoration: none; 
+            transition: 0.4s; background: rgba(168, 85, 247, 0.05); 
+        }
         .btn-discord:hover { background: var(--accent); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 20px; }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4.5rem; letter-spacing: 20px; margin-bottom: 10px; }
+        
+        #typewriter { letter-spacing: 10px; color: var(--silver); text-transform: uppercase; font-size: 0.9rem; min-height: 1.2em; }
+        .cursor { color: var(--accent); animation: blink 1s infinite; font-weight: bold; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* --- MANIFESTO --- */
-        .manifesto-section { padding: 100px 10%; display: flex; justify-content: center; }
-        .manifesto-card {
-            background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 40px; padding: 80px;
-            max-width: 1200px; width: 100%; opacity: 0; transform: translateY(50px); transition: 1s;
+        .scroll-hint { 
+            margin-top: 80px; font-family: 'Syncopate', sans-serif; font-size: 0.75rem; 
+            letter-spacing: 8px; color: var(--silver); text-decoration: none; 
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            transition: 0.5s;
         }
-        .manifesto-card.reveal { opacity: 1; transform: translateY(0); }
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .feature-item { text-align: center; padding: 30px; }
-        .feature-item h3 { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; }
-
-        /* --- PATHS --- */
-        .path-section { padding: 100px 10%; text-align: center; }
-        .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
-        .path-card { 
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
-            padding: 40px; border-radius: 20px; cursor: pointer; transition: 0.3s;
+        .scroll-hint span {
+            background: linear-gradient(90deg, #555, #fff, #555);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
         }
-        .path-card:hover, .path-card.active { border-color: var(--accent); background: rgba(168, 85, 247, 0.05); }
+        @keyframes textShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        .scroll-hint:hover { color: var(--accent); transform: translateY(5px); }
 
-        /* --- TEAM --- */
+        .arrow-down {
+            width: 18px; height: 18px; border-bottom: 3px solid var(--accent); border-right: 3px solid var(--accent);
+            transform: rotate(45deg); animation: arrowAnim 2s infinite ease-in-out;
+        }
+        @keyframes arrowAnim { 0% { opacity: 0; transform: rotate(45deg) translate(-15px, -15px); } 50% { opacity: 1; } 100% { opacity: 0; transform: rotate(45deg) translate(10px, 10px); } }
+
+        /* --- FILOZOFIA --- */
+        .manifesto-section { padding: 120px 10%; display: flex; flex-direction: column; align-items: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1400px; }
+        
+        .feature-card { height: 400px; perspective: 1000px; cursor: pointer; }
+        .feature-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .feature-card.flipped .feature-inner { transform: rotateY(180deg); }
+
+        .feature-front, .feature-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 40px; border-radius: 30px; border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
+        }
+        .feature-back { transform: rotateY(180deg); background: rgba(168, 85, 247, 0.05); border-color: var(--accent); }
+
+        .icon-box svg { width: 80px; height: 80px; color: var(--accent); filter: drop-shadow(0 0 15px var(--accent)); }
+        .feature-front h3 { font-family: 'Syncopate', sans-serif; font-size: 0.9rem; letter-spacing: 4px; margin-top: 30px; }
+        .feature-back p { font-size: 0.9rem; color: #ccc; line-height: 1.8; }
+
+        /* --- WYDARZENIA Z MIASTA (POPRAWIONY ODSTĘP) --- */
+        .news-section { padding: 50px 10% 100px 10%; text-align: center; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 60px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        
+        .news-card {
+            position: relative; background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px; padding: 40px; text-align: left; overflow: hidden;
+            transition: 0.4s; cursor: default;
+        }
+        .news-card::before {
+            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, 0.15), transparent);
+            transition: 0s; z-index: 1; opacity: 0;
+        }
+        .news-card:hover::before { animation: scanEffect 1.5s linear infinite; opacity: 1; }
+        @keyframes scanEffect {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        
+        .news-card:hover { border-color: var(--accent); transform: translateY(-5px); background: rgba(168, 85, 247, 0.02); }
+
+        .news-date { font-family: 'Syncopate', sans-serif; font-size: 0.6rem; color: var(--accent); letter-spacing: 2px; }
+        .news-card h3 { font-family: 'Syncopate', sans-serif; font-size: 0.9rem; margin: 15px 0; letter-spacing: 2px; color: #fff; }
+        .news-card p { font-size: 0.85rem; color: #aaa; line-height: 1.6; }
+
+        /* --- ADMINISTRACJA --- */
         .team-section { padding: 100px 10%; text-align: center; }
-        .team-grid { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
+        .team-grid { display: flex; justify-content: center; gap: 30px; margin-top: 60px; flex-wrap: wrap; }
         .team-card {
-            width: 250px; background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px; overflow: hidden; transition: 0.5s; cursor: pointer;
+            width: 320px; background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px; overflow: hidden; transition: 0.4s; padding-bottom: 25px;
         }
-        .team-card.expanded { width: 400px; border-color: var(--accent); }
-        .team-img { width: 100%; height: 300px; background: #222; }
-        .team-info { padding: 20px; }
-        .team-info h4 { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 2px; }
+        .team-card:hover { border-color: var(--accent); transform: translateY(-10px); box-shadow: 0 20px 50px rgba(168, 85, 247, 0.2); }
+        
+        .team-img-container { width: 100%; height: 320px; overflow: hidden; background: #111; border-bottom: 1px solid var(--glass-border); }
+        .team-img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: grayscale(20%); }
+        .team-card:hover .team-img-container img { filter: grayscale(0%); transform: scale(1.05); }
+        
+        .team-info { padding-top: 20px; }
+        .team-info h4 { font-family: 'Syncopate', sans-serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 8px; }
+        .role-badge { display: block; font-family: 'Syncopate', sans-serif; font-size: 0.65rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
 
-        /* --- TICKET --- */
-        .ticket-system { margin-top: 50px; display: none; justify-content: center; }
-        .ticket-system.active { display: flex; }
-        .ticket-container {
-            width: 600px; background: #000; border-left: 5px solid var(--accent);
-            padding: 40px; display: flex; justify-content: space-between;
-        }
-
-        @keyframes pulseStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     </style>
 </head>
 <body>
 
-    <div class="background-wrapper"></div>
-    <div class="cyber-kompas"></div>
+    <div id="landing-gate">
+        <div class="background-wrapper"></div>
+        <div class="cyber-kompas"></div>
+        <div class="countdown-container">
+            <span class="countdown-label">START SERWERA ZA:</span>
+            <div id="timer">00D 00H 00M 00S</div>
+        </div>
+        <button class="init-btn" onclick="unlockSite()">KLIKNIJ I POZNAJ NAS...</button>
+    </div>
 
-    <nav class="ethos-navbar">
-        <div class="nav-content">
-            <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="Ethos RP"></a></div>
-            <ul class="nav-links">
-                <li><a href="index.html">Start</a></li>
-                <li><a href="regulamin.html">Regulamin</a></li>
-                <li><a href="regulamin-dc.html">Regulamin Discord</a></li>
-                <li><a href="#" class="locked-link">Whitelist</a></li>
-                <li><a href="#">Sklep</a></li>
-            </ul>
-            <div class="nav-right-side">
-                <div class="wl-status-box">
-                    <span class="wl-label">SYSTEM STATUS</span>
-                    <div class="wl-value"><div class="status-dot"></div> WHITELIST: OFF</div>
-                </div>
+    <div id="main-wrapper">
+        <div class="background-wrapper"></div>
+        <div class="cyber-kompas"></div>
+
+        <nav class="ethos-navbar">
+            <div class="nav-glow-bar"></div> <div class="nav-content">
+                <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="Ethos RP"></a></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Start</a></li>
+                    <li><a href="regulamin.html">Regulamin</a></li>
+                    <li><a href="regulamin-dc.html">Regulamin Discord</a></li>
+                    <li><a href="javascript:void(0)" class="locked-link">Whitelist</a></li>
+                    <li><a href="sklep.html">Sklep</a></li>
+                </ul>
                 <a href="https://discord.gg/j2C7JpgPRK" target="_blank" class="btn-discord">DISCORD</a>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <header class="hero">
-        <h1>ETHOS RP</h1>
-        <p style="letter-spacing: 10px; color: var(--silver); text-transform: uppercase;">Gdzie jakość spotyka wolność</p>
-    </header>
+        <header class="hero">
+            <h1>ETHOS RP</h1>
+            <div><span id="typewriter"></span><span class="cursor">_</span></div>
+            <a href="#manifesto" class="scroll-hint">
+                <span>ODKRYJ NASZĄ WIZJĘ</span>
+                <div class="arrow-down"></div>
+            </a>
+        </header>
 
-    <section class="manifesto-section">
-        <div class="manifesto-card" id="manifestoCard">
+        <section id="manifesto" class="manifesto-section">
+            <h2 style="font-family: 'Syncopate'; letter-spacing: 12px; margin-bottom: 80px;">NASZA FILOZOFIA</h2>
             <div class="features-grid">
-                <div class="feature-item">
-                    <h3>ELITARNY OPEN</h3>
-                    <p>Brak Whitelist nie oznacza braku zasad.</p>
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="feature-inner">
+                        <div class="feature-front">
+                            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg></div>
+                            <h3>ELITARNY OPEN</h3>
+                        </div>
+                        <div class="feature-back">
+                            <p>Brak Whitelist nie oznacza braku zasad. Stawiamy na dojrzałą społeczność i wysoką kulturę rozgrywki bez zbędnych barier wejścia.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-item">
-                    <h3>SILNIK EMOCJI</h3>
-                    <p>Autorskie rozwiązania napędzają Twoją rozgrywkę.</p>
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="feature-inner">
+                        <div class="feature-front">
+                            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg></div>
+                            <h3>SILNIK EMOCJI</h3>
+                        </div>
+                        <div class="feature-back">
+                            <p>Nasze autorskie systemy i zoptymalizowane skrypty są zaprojektowane tak, aby każda akcja dostarczała maksymalnej immersji.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-item">
-                    <h3>TWOJA DEFINICJA</h3>
-                    <p>Ty ustalasz zasady swojej historii.</p>
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="feature-inner">
+                        <div class="feature-front">
+                            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+                            <h3>TWOJA HISTORIA</h3>
+                        </div>
+                        <div class="feature-back">
+                            <p>Zapewniamy narzędzia, ale to Ty piszesz scenariusz. Twój Ethos, Twoje zasady, Twoja nieograniczona przyszłość.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="path-section">
-        <h2 style="font-family: 'Syncopate'; letter-spacing: 10px;">WYBIERZ SWOJĄ ŚCIEŻKĘ</h2>
-        <div class="path-grid">
-            <div class="path-card" onclick="selectPath('CYWIL', '# silver', 'LEGAL')">
-                <h3>CYWIL</h3>
+        <section class="news-section">
+            <h2 style="font-family: 'Syncopate'; letter-spacing: 10px; margin-bottom: 20px;">WYDARZENIA Z MIASTA</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <span class="news-date">05 / 01 / 2026</span>
+                    <h3>KRWAWY NAPAD</h3>
+                    <p>Napad na bank Pacific zakończony strzelaniną. LSPD poszukuje sprawców czarnego Sultana.</p>
+                </div>
+                <div class="news-card">
+                    <span class="news-date">03 / 01 / 2026</span>
+                    <h3>OTWARCIE BAHAMA</h3>
+                    <p>Nowy właściciel zaprasza na wielkie otwarcie klubu. Spodziewaj się luksusu i najlepszych drinków w mieście.</p>
+                </div>
+                <div class="news-card">
+                    <span class="news-date">01 / 01 / 2026</span>
+                    <h3>NOWY ROK, NOWY ETOS</h3>
+                    <p>Wchodzimy w nowy rok z odświeżonym systemem ekonomii. Sprawdź co zmieniło się w mieście.</p>
+                </div>
             </div>
-            <div class="path-card" onclick="selectPath('FRAKCJA', '#2563eb', 'SERVICE')">
-                <h3>FRAKCJA</h3>
-            </div>
-            <div class="path-card" onclick="selectPath('CRIME', '#dc2626', 'ILLEGAL')">
-                <h3>CRIME</h3>
-            </div>
-        </div>
+        </section>
 
-        <div id="ticket" class="ticket-system">
-            <div class="ticket-container" id="t-side">
-                <div class="t-main">
-                    <h2 id="t-path">PATH</h2>
-                    <p id="t-id-code">#ID-0000</p>
-                    <p id="t-status">STATUS</p>
+        <section class="team-section">
+            <h2 style="font-family: 'Syncopate'; letter-spacing: 10px;">ADMINISTRACJA</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-img-container"><img src="jordee.gif" alt="Project Owner"></div>
+                    <div class="team-info">
+                        <span class="role-badge">PROJECT OWNER (CEO)</span>
+                        <h4>JorDee777</h4>
+                    </div>
                 </div>
-                <button id="claim-btn" style="padding: 10px 20px; border: none; cursor: pointer; color: white;">WYBIERZ</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="team-section">
-        <h2 style="font-family: 'Syncopate'; letter-spacing: 10px;">ADMINISTRACJA</h2>
-        <div class="team-grid">
-            <div class="team-card" onclick="toggleCard(this)">
-                <div class="team-img"></div>
-                <div class="team-info">
-                    <h4>ZARZĄD</h4>
-                    <p>MemorialLink</p>
+                <div class="team-card">
+                    <div class="team-img-container"><img src="avatar-admin.png" alt="Admin Avatar"></div>
+                    <div class="team-info">
+                        <span class="role-badge">ADMINISTRATOR</span>
+                        <h4>XXX</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="team-card" onclick="toggleCard(this)">
-                <div class="team-img"></div>
-                <div class="team-info">
-                    <h4>ZARZĄD</h4>
-                    <p>Osoba 2</p>
+                <div class="team-card">
+                    <div class="team-img-container"><img src="avatar-dev.gif" alt="Developer Avatar"></div>
+                    <div class="team-info">
+                        <span class="role-badge">DEVELOPER</span>
+                        <h4>XXX</h4>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <script>
-        // Reveal Manifesto
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal'); });
-        }, { threshold: 0.1 });
-        observer.observe(document.getElementById('manifestoCard'));
+        // ODLICZANIE
+        const targetDate = new Date("Jan 17, 2026 18:00:00").getTime();
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff < 0) { document.getElementById("timer").innerHTML = "READY"; return; }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = `${d}D ${h}H ${m}M ${s}S`;
+        }
+        setInterval(updateTimer, 1000); updateTimer();
 
-        // Path Selection
-        function selectPath(name, color, status) {
-            document.querySelectorAll('.path-card').forEach(c => c.classList.remove('active'));
-            const ticket = document.getElementById('ticket');
-            ticket.classList.add('active');
-            document.getElementById('t-path').innerText = name;
-            document.getElementById('t-path').style.color = color;
-            document.getElementById('t-status').innerText = status;
-            
-            const idElement = document.getElementById('t-id-code');
-            let ticks = 0;
-            const interval = setInterval(() => {
-                idElement.innerText = `#${name.charAt(0)}-${Math.floor(1000 + Math.random() * 9000)}`;
-                if (++ticks > 12) clearInterval(interval);
-            }, 40);
+        // ODBLOKOWANIE
+        function unlockSite() {
+            const gate = document.getElementById('landing-gate');
+            const wrapper = document.getElementById('main-wrapper');
+            gate.classList.add('glitch-flash');
+            setTimeout(() => {
+                gate.style.opacity = '0';
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                    wrapper.classList.add('visible');
+                    startTypewriter();
+                }, 1000);
+            }, 400);
         }
 
-        // Team Toggle
-        function toggleCard(card) {
-            const isExpanded = card.classList.contains('expanded');
-            document.querySelectorAll('.team-card').forEach(c => c.classList.remove('expanded'));
-            if (!isExpanded) card.classList.add('expanded');
+        // MASZYNA DO PISANIA
+        function startTypewriter() {
+            const el = document.getElementById('typewriter');
+            const phrases = ["Tu jakość spotyka wolność", "Bądź kim chcesz", "Twórz własną historię"];
+            let pIdx = 0, cIdx = 0, isDeleting = false;
+            function type() {
+                const current = phrases[pIdx];
+                el.textContent = isDeleting ? current.substring(0, cIdx--) : current.substring(0, cIdx++);
+                let speed = isDeleting ? 50 : 100;
+                if (!isDeleting && cIdx === current.length + 1) { isDeleting = true; speed = 2000; }
+                else if (isDeleting && cIdx === 0) { isDeleting = false; pIdx = (pIdx + 1) % phrases.length; speed = 500; }
+                setTimeout(type, speed);
+            }
+            type();
         }
     </script>
 </body>
