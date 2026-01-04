@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Terminal | EthosRP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #7289da; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-hover: rgba(114, 137, 218, 0.1);
+            --glass-border: rgba(114, 137, 218, 0.3);
+            --danger: #ff4d4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .background-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #0f111a 0%, #000 100%);
+            z-index: -2;
+        }
+
+        /* --- NAVBAR --- */
+        .ethos-navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 80px;
+            z-index: 1000; display: flex; align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px);
+        }
+
+        .nav-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo img { height: 40px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .back-btn { text-decoration: none; color: white; font-family: 'Syncopate'; font-size: 0.6rem; letter-spacing: 2px; border: 1px solid var(--glass-border); padding: 8px 20px; border-radius: 4px; transition: 0.3s; }
+        .back-btn:hover { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+
+        /* --- HEADER --- */
+        .header-section { margin-top: 140px; text-align: center; padding: 0 20px; }
+        .header-section h1 { font-family: 'Syncopate'; letter-spacing: 12px; font-size: 2.2rem; margin-bottom: 10px; color: var(--accent); text-shadow: 0 0 20px rgba(114, 137, 218, 0.4); }
+        .header-section p { font-size: 0.7rem; letter-spacing: 5px; opacity: 0.5; text-transform: uppercase; margin-bottom: 60px; }
+
+        /* --- ACCORDIONS --- */
+        .rules-wrapper { max-width: 850px; margin: 0 auto 100px; padding: 0 20px; }
+
+        .accordion-item {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-item:hover { border-color: var(--glass-border); background: var(--glass-hover); }
+
+        .accordion-header {
+            padding: 22px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header h2 { font-family: 'Syncopate'; font-size: 0.75rem; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
+        .status-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .chevron { width: 8px; height: 8px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg); transition: 0.4s; }
+        .accordion-item.active .chevron { transform: rotate(-135deg); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion-item.active .accordion-content { max-height: 800px; }
+        .content-inner { padding: 30px; color: #ddd; font-size: 0.9rem; font-weight: 300; }
+        .content-inner b { color: var(--accent); font-weight: 600; }
+
+        .rule-row { margin-bottom: 15px; display: flex; gap: 15px; align-items: flex-start; }
+        .rule-num { color: var(--accent); font-family: 'Syncopate'; font-size: 0.7rem; min-width: 30px; margin-top: 4px; }
+
+        /* --- SEARCH --- */
+        .search-container { max-width: 600px; margin: 0 auto 40px; text-align: center; }
+        #dcSearch {
+            width: 100%; background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 15px 25px; border-radius: 5px; color: white; font-family: 'Montserrat';
+            outline: none; transition: 0.3s;
+        }
+        #dcSearch:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(114, 137, 218, 0.2); }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper"></div>
+
+    <nav class="ethos-navbar">
+        <div class="nav-content">
+            <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="EthosRP"></a></div>
+            <a href="index.html" class="back-btn">POWRÓT</a>
+        </div>
+    </nav>
+
+    <header class="header-section">
+        <h1>DISCORD</h1>
+        <p>Protokół komunikacji społeczności</p>
+        <div class="search-container">
+            <input type="text" id="dcSearch" placeholder="Czego szukasz? (np. spam, nsfw, reklama)">
+        </div>
+    </header>
+
+    <main class="rules-wrapper">
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> KULTURA OSOBISTA</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="rule-row"><span class="rule-num">01</span><span>Okazuj szacunek wszystkim użytkownikom i przestrzegaj zasad kultury osobistej.</span></div>
+                    <div class="rule-row"><span class="rule-num">02</span><span>Staraj się pisać poprawnie, zwracając uwagę na ortografię.</span></div>
+                    <div class="rule-row"><span class="rule-num">07</span><span>Nie nękaj, nie obrażaj, nie oszukuj i nie stosuj mowy nienawiści.</span></div>
+                    <div class="rule-row"><span class="rule-num">10</span><span>Nie prowokuj innych użytkowników.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> KOMUNIKACJA I TREŚCI</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="rule-row"><span class="rule-num">03</span><span>Nie spamuj, nie flooduj oraz nie nadużywaj <b>CAPS LOCKA</b>.</span></div>
+                    <div class="rule-row"><span class="rule-num">04</span><span>Nie pinguj wielokrotnie lub bez uzasadnionej potrzeby.</span></div>
+                    <div class="rule-row"><span class="rule-num">05</span><span>Zakazuje się publikowania treści <b>NSFW</b> (zdjęcia, teksty, avatary o charakterze seksualnym lub rasistowskim).</span></div>
+                    <div class="rule-row"><span class="rule-num">06</span><span>Nie poruszaj tematów religijnych, politycznych oraz pornograficznych.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> ZAKAZY I REKLAMY</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="rule-row"><span class="rule-num">08</span><span><b>Całkowity zakaz reklamowania</b> stron, serwerów czy kodów twórców (publicznie i w PM).</span></div>
+                    <div class="rule-row"><span class="rule-num">09</span><span>Zakaz handlu (kupno, sprzedaż, wymiana).</span></div>
+                    <div class="rule-row"><span class="rule-num">11</span><span>Zakaz wyłudzania oraz żebrania.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> BEZPIECZEŃSTWO I ADMIN</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="rule-row"><span class="rule-num">12</span><span>Nie podszywaj się pod administrację ani osoby publiczne.</span></div>
+                    <div class="rule-row"><span class="rule-num">13</span><span>Nie używaj komend moderacyjnych bez uprawnień.</span></div>
+                    <div class="rule-row"><span class="rule-num">14</span><span><b>Zakaz udostępniania danych prywatnych</b> innych osób (Doxing).</span></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Obsługa akordów
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('active');
+            });
+        });
+
+        // Wyszukiwarka
+        const searchInput = document.getElementById('dcSearch');
+        const items = document.querySelectorAll('.accordion-item');
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = "block";
+                    if(filter.length > 2) item.classList.add('active');
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

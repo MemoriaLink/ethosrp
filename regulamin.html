@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database | EthosRP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #a855f7; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-hover: rgba(168, 85, 247, 0.08);
+            --glass-border: rgba(168, 85, 247, 0.2);
+            --success: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- TŁO --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #151515 0%, #000 100%);
+            z-index: -2;
+        }
+
+        .cyber-kompas {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px; height: 900px;
+            border: 1px solid rgba(168, 85, 247, 0.03);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotateCompass 120s linear infinite;
+        }
+
+        @keyframes rotateCompass {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- NAVBAR --- */
+        .ethos-navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 80px;
+            z-index: 1000; display: flex; align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px);
+        }
+
+        .nav-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo img { height: 40px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .back-btn { text-decoration: none; color: white; font-family: 'Syncopate'; font-size: 0.6rem; letter-spacing: 2px; border: 1px solid var(--glass-border); padding: 8px 20px; border-radius: 4px; transition: 0.3s; }
+        .back-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+        /* --- HEADER & SEARCH --- */
+        .header-section { margin-top: 140px; text-align: center; padding: 0 20px; }
+        .header-section h1 { font-family: 'Syncopate'; letter-spacing: 12px; font-size: 2.5rem; margin-bottom: 40px; }
+        
+        .search-box { position: relative; max-width: 600px; margin: 0 auto 60px; }
+        #ruleSearch {
+            width: 100%; background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 20px 60px; border-radius: 50px; color: white; font-family: 'Montserrat';
+            font-size: 1rem; outline: none; transition: 0.4s; text-align: center;
+        }
+        #ruleSearch:focus { border-color: var(--accent); box-shadow: 0 0 30px rgba(168, 85, 247, 0.15); }
+
+        /* --- AKORDY (ACCORDIONS) --- */
+        .rules-wrapper { max-width: 900px; margin: 0 auto 100px; padding: 0 20px; }
+
+        .accordion-item {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .accordion-item:hover { border-color: var(--glass-border); background: var(--glass-hover); }
+
+        .accordion-header {
+            padding: 25px 35px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-header h2 {
+            font-family: 'Syncopate';
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .chevron { width: 12px; height: 12px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg); transition: 0.4s; }
+        .accordion-item.active .chevron { transform: rotate(-135deg); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .accordion-item.active .accordion-content { max-height: 2000px; transition: max-height 1s ease-in; }
+
+        .content-inner { padding: 30px 40px; color: #ccc; font-weight: 300; font-size: 0.95rem; }
+        .content-inner b { color: var(--accent); }
+
+        /* --- MODUŁY SPECJALNE --- */
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+        .mini-tag { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .limit-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .limit-row:last-child { border: none; }
+
+        .gz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .gz-box { padding: 15px; background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); border-radius: 8px; text-align: center; color: var(--success); font-weight: 700; font-size: 0.8rem; }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper"></div>
+    <div class="cyber-kompas"></div>
+
+    <nav class="ethos-navbar">
+        <div class="nav-content">
+            <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="EthosRP"></a></div>
+            <a href="index.html" class="back-btn">POWRÓT</a>
+        </div>
+    </nav>
+
+    <header class="header-section">
+        <h1>DATABASE</h1>
+        <div class="search-box">
+            <input type="text" id="ruleSearch" placeholder="SZUKAJ FRAZY LUB PARAGRAFU...">
+        </div>
+    </header>
+
+    <main class="rules-wrapper" id="rulesContainer">
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 01. ZASADY OGÓLNE</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p><b>1.1</b> Akceptacja regulaminu następuje po rozmowie na Discordzie.<br><br>
+                    <b>1.2 - 1.4</b> Projekt <b>EthosRP</b> zastrzega prawa autorskie do treści regulaminu. Kopiowanie surowo wzbronione.<br><br>
+                    <b>1.5 - 1.7</b> Zarząd może modyfikować zasady bez uprzedzenia. Administracja ma ostateczny głos w kwestiach spornych, nawet poza spisem zasad.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 02. REGULAMIN WYSPY</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p><b>2.2</b> Zakaz używania cheatów i exploitów.<br>
+                    <b>2.6</b> Limit postaci: <b>Maksymalnie 2</b>.<br>
+                    <b>2.8 - 2.9</b> Zakaz "gadania pod wodą" oraz obowiązek odgrywania bólu.<br>
+                    <b>2.11</b> Zakaz używania kont firmowych do tuningu aut prywatnych.<br>
+                    <b>4.9</b> Obowiązek używania imion i nazwisk o charakterze obcojęzycznym.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 03. SŁOWNIK POJĘĆ</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner tag-cloud">
+                    <div class="mini-tag"><b>IC</b> - In Character</div>
+                    <div class="mini-tag"><b>OOC</b> - Out Of Character</div>
+                    <div class="mini-tag"><b>MG</b> - Meta Gaming</div>
+                    <div class="mini-tag"><b>PG</b> - Power Gaming</div>
+                    <div class="mini-tag"><b>BW</b> - Brutally Wounded</div>
+                    <div class="mini-tag"><b>VDM</b> - Vehicle DM</div>
+                    <div class="mini-tag"><b>RDM</b> - Random DM</div>
+                    <div class="mini-tag"><b>CK</b> - Character Kill</div>
+                    <div class="mini-tag"><b>CL</b> - Combat Log</div>
+                    <div class="mini-tag"><b>WMG</b> - Mechanika Gry</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 04. PRZESTĘPSTWA</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="limit-row"><span>Rabunek (min. LSPD)</span> <b>1</b></div>
+                    <div class="limit-row"><span>Napad na sklep (min. LSPD)</span> <b>2</b></div>
+                    <div class="limit-row"><span>Jubiler / Bank (min. LSPD)</span> <b>3-4</b></div>
+                    <br>
+                    <p><b>3.12</b> Zakaz napadów na sklepy z bronią długą.<br>
+                    <b>3.7</b> Maksymalna liczba napastników: <b>8 osób</b>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 05. FRAKCJE (EMS/LSPD/MECH)</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p><b>4.1</b> EMS: Brak możliwości współpracy z grupami przestępczymi.<br>
+                    <b>4.5</b> Zakaz zabierania gotówki oraz broni długiej LSPD.<br>
+                    <b>4.7 - 4.8</b> Zakaz kradzieży dokumentów i Kart SIM.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 06. GREEN ZONES</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner gz-grid">
+                    <div class="gz-box">SZPITAL</div>
+                    <div class="gz-box">KOMENDA</div>
+                    <div class="gz-box">MECHANIK</div>
+                    <div class="gz-box">URZĄD MIASTA</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><div class="status-dot"></div> 07. LIMITY AKCJI</h2>
+                <div class="chevron"></div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="limit-row"><span>Sklep</span> <b>3 vs 5</b></div>
+                    <div class="limit-row"><span>Bank</span> <b>5 vs 8</b></div>
+                    <div class="limit-row"><span>Pacific</span> <b>6 vs 10</b></div>
+                    <div class="limit-row"><span>Magazyn</span> <b>8 vs 12</b></div>
+                    <br>
+                    <p><b>CODE 0:</b> Znosi limity jednostek dla LSPD w sytuacjach krytycznych.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Obsługa Akordów
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Obsługa Wyszukiwarki
+        const searchInput = document.getElementById('ruleSearch');
+        const items = document.querySelectorAll('.accordion-item');
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = "block";
+                    if(filter.length > 2) item.classList.add('active'); // Otwórz jeśli szukasz
+                } else {
+                    item.style.display = "none";
+                }
+            });
+            if(filter === "") items.forEach(i => i.classList.remove('active')); // Zamknij jeśli puste
+        });
+    </script>
+
+</body>
+</html>
