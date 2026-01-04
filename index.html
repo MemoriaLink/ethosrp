@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethos RP | Elite Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --silver: #e0e0e0;
+            --accent: #a855f7; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(168, 85, 247, 0.2);
+            --locked: #555;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- TŁO --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #151515 0%, #000 100%);
+            z-index: -2;
+        }
+
+        .cyber-kompas {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotateCompass 50s linear infinite;
+            opacity: 0.15;
+        }
+
+        @keyframes rotateCompass {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- NAVBAR --- */
+        .ethos-navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: 100px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+        }
+
+        .nav-content {
+            width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 60px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .nav-logo img {
+            height: 75px;
+            filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.4));
+            animation: logoFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoFloat { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+        .nav-links { list-style: none; display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: white;
+            font-family: 'Syncopate', sans-serif; font-size: 0.7rem;
+            letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .locked-link { color: var(--locked) !important; cursor: not-allowed; display: flex; align-items: center; gap: 10px; }
+
+        .nav-right-side { display: flex; align-items: center; gap: 30px; }
+        .wl-status-box { text-align: right; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 30px; }
+        .wl-label { font-family: 'Syncopate', sans-serif; font-size: 0.55rem; color: var(--locked); letter-spacing: 2px; }
+        .wl-value { font-family: 'Syncopate', sans-serif; font-size: 0.75rem; color: var(--silver); display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 8px; height: 8px; background-color: var(--silver); border-radius: 50%; animation: pulseStatus 2s infinite; }
+        @keyframes pulseStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .btn-discord { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; border: 1px solid var(--accent); color: white; text-decoration: none; transition: 0.4s; background: rgba(168, 85, 247, 0.05); }
+        .btn-discord:hover { background: var(--accent); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 20px; background: linear-gradient(to bottom, #fff 30%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .scroll-hint { margin-top: 60px; font-family: 'Syncopate', sans-serif; font-size: 0.9rem; letter-spacing: 6px; color: var(--accent); text-transform: uppercase; text-decoration: none; animation: pulseHint 2.5s infinite ease-in-out; cursor: pointer; }
+
+        /* --- MANIFESTO --- */
+        .manifesto-section { padding: 150px 10% 50px; display: flex; justify-content: center; perspective: 1500px; }
+        .manifesto-card {
+            background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border); border-radius: 40px;
+            padding: 100px 60px; max-width: 1400px; width: 100%;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            opacity: 0; transform: translateY(150px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .manifesto-card.reveal { opacity: 1; transform: translateY(0); }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .feature-item { 
+            padding: 50px 40px; background: rgba(255,255,255, 0.02);
+            border: 1px solid rgba(255,255,255, 0.05); border-radius: 30px;
+            transition: transform 0.1s ease, border-color 0.3s ease;
+            transform-style: preserve-3d; text-align: center;
+        }
+        .feature-item:hover { border-color: var(--accent); box-shadow: 0 0 30px rgba(168, 85, 247, 0.1); }
+        .feature-item h3 { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; letter-spacing: 4px; color: #fff; margin-top: 20px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper"></div>
+    <div class="cyber-kompas"></div>
+
+    <nav class="ethos-navbar">
+        <div class="nav-content">
+            <div class="nav-logo"><img src="ethos-removebg-preview.png" alt="Ethos RP"></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Start</a></li>
+                <li><a href="regulamin.html">Regulamin</a></li>
+                <li><a href="#" class="locked-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Whitelist</a></li>
+                <li><a href="#">Sklep</a></li>
+            </ul>
+            <div class="nav-right-side">
+                <div class="wl-status-box"><span class="wl-label">SYSTEM STATUS</span><div class="wl-value"><div class="status-dot"></div> WHITELIST: OFF</div></div>
+                <a href="regulamin-dc.html" class="btn-discord">Discord</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>ETHOS RP</h1>
+        <p style="letter-spacing: 10px; color: var(--silver); font-weight: 200; text-transform: uppercase;">Gdzie jakość spotyka wolność</p>
+        <a href="#manifestoCard" class="scroll-hint">przewiń w dół i przeczytaj o nas</a>
+    </header>
+
+    <section class="manifesto-section">
+        <div class="manifesto-card" id="manifestoCard">
+            <div style="text-align: center; margin-bottom: 70px;"><h2 style="font-family: 'Syncopate', sans-serif; font-size: 2rem; letter-spacing: 12px; color: #fff;">NASZA FILOZOFIA</h2></div>
+            <div class="features-grid">
+                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div style="color:var(--accent); filter: drop-shadow(0 0 10px var(--accent));"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3-3.5 3.5z"></path></svg></div>
+                    <h3>ELITARNY OPEN</h3>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Brak Whitelist nie oznacza braku zasad. System intuicyjny pilnuje porządku.</p>
+                </div>
+                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div style="color:var(--accent); filter: drop-shadow(0 0 10px var(--accent));"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg></div>
+                    <h3>SILNIK EMOCJI</h3>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Autorskie rozwiązania i unikalne skrypty napędzają Twoją rozgrywkę.</p>
+                </div>
+                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div style="color:var(--accent); filter: drop-shadow(0 0 10px var(--accent));"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+                    <h3>TWOJA DEFINICJA</h3>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Ty ustalasz zasady swojej historii. My dostarczamy Ci możliwości.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal'); });
+        }, { threshold: 0.15 });
+        observer.observe(document.getElementById('manifestoCard'));
+
+        function tilt(e, el) {
+            const rect = el.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            el.style.transform = `rotateX(${y * 15}deg) rotateY(${x * 15}deg)`;
+        }
+        function resetTilt(el) { el.style.transform = `rotateX(0deg) rotateY(0deg)`; }
+    </script>
+</body>
+</html>
