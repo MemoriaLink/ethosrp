@@ -53,15 +53,10 @@
         /* --- NAVBAR --- */
         .ethos-navbar {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            height: 100px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
+            top: 0; left: 0; width: 100%; height: 100px;
+            z-index: 1000; display: flex; align-items: center;
             border-bottom: 1px solid var(--glass-border);
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px);
         }
 
         .nav-content {
@@ -69,13 +64,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .nav-logo img {
-            height: 75px;
-            filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.4));
-            animation: logoFloat 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes logoFloat { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        .nav-logo img { height: 75px; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.4)); }
 
         .nav-links { list-style: none; display: flex; gap: 40px; align-items: center; }
         .nav-links a {
@@ -84,55 +73,62 @@
             letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
         }
         .nav-links a:hover { color: var(--accent); }
-        .locked-link { color: var(--locked) !important; cursor: not-allowed; display: flex; align-items: center; gap: 10px; }
 
         .nav-right-side { display: flex; align-items: center; gap: 30px; }
         .wl-status-box { text-align: right; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 30px; }
-        .wl-label { font-family: 'Syncopate', sans-serif; font-size: 0.55rem; color: var(--locked); letter-spacing: 2px; }
+        .wl-label { font-family: 'Syncopate', sans-serif; font-size: 0.55rem; color: var(--locked); }
         .wl-value { font-family: 'Syncopate', sans-serif; font-size: 0.75rem; color: var(--silver); display: flex; align-items: center; gap: 8px; }
         .status-dot { width: 8px; height: 8px; background-color: var(--silver); border-radius: 50%; animation: pulseStatus 2s infinite; }
-        @keyframes pulseStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        .btn-discord { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; border: 1px solid var(--accent); color: white; text-decoration: none; transition: 0.4s; background: rgba(168, 85, 247, 0.05); }
+        .btn-discord { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; padding: 12px 30px; border: 1px solid var(--accent); color: white; text-decoration: none; transition: 0.4s; }
         .btn-discord:hover { background: var(--accent); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 20px; background: linear-gradient(to bottom, #fff 30%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .scroll-hint { margin-top: 60px; font-family: 'Syncopate', sans-serif; font-size: 0.9rem; letter-spacing: 6px; color: var(--accent); text-transform: uppercase; text-decoration: none; animation: pulseHint 2.5s infinite ease-in-out; cursor: pointer; }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 20px; }
 
         /* --- MANIFESTO --- */
-        .manifesto-section { padding: 150px 10% 50px; display: flex; justify-content: center; perspective: 1500px; }
+        .manifesto-section { padding: 100px 10%; display: flex; justify-content: center; }
         .manifesto-card {
             background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 40px;
-            padding: 100px 60px; max-width: 1400px; width: 100%;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            opacity: 0; transform: translateY(150px);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--glass-border); border-radius: 40px; padding: 80px;
+            max-width: 1200px; width: 100%; opacity: 0; transform: translateY(50px); transition: 1s;
         }
         .manifesto-card.reveal { opacity: 1; transform: translateY(0); }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .feature-item { 
-            padding: 50px 40px; background: rgba(255,255,255, 0.02);
-            border: 1px solid rgba(255,255,255, 0.05); border-radius: 30px;
-            transition: transform 0.1s ease, border-color 0.3s ease;
-            transform-style: preserve-3d; text-align: center;
-        }
-        .feature-item:hover { border-color: var(--accent); box-shadow: 0 0 30px rgba(168, 85, 247, 0.1); }
-        .feature-item h3 { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; letter-spacing: 4px; color: #fff; margin-top: 20px; }
+        .feature-item { text-align: center; padding: 30px; }
+        .feature-item h3 { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; }
 
-        /* --- PATH SELECTION --- */
-        .path-section { padding: 100px 10%; display: flex; flex-direction: column; align-items: center; }
-        .path-title { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 60px; color: var(--accent); }
-        .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1000px; }
-        .path-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px; border-radius: 25px; cursor: pointer; text-align: center; transition: 0.4s;
+        /* --- PATHS --- */
+        .path-section { padding: 100px 10%; text-align: center; }
+        .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
+        .path-card { 
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px; border-radius: 20px; cursor: pointer; transition: 0.3s;
         }
-        .path-card:hover { border-color: var(--accent); transform: translateY(-10px); }
-        .path-card h3 { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 3px; margin-top: 15px; }
+        .path-card:hover, .path-card.active { border-color: var(--accent); background: rgba(168, 85, 247, 0.05); }
 
+        /* --- TEAM --- */
+        .team-section { padding: 100px 10%; text-align: center; }
+        .team-grid { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
+        .team-card {
+            width: 250px; background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px; overflow: hidden; transition: 0.5s; cursor: pointer;
+        }
+        .team-card.expanded { width: 400px; border-color: var(--accent); }
+        .team-img { width: 100%; height: 300px; background: #222; }
+        .team-info { padding: 20px; }
+        .team-info h4 { font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 2px; }
+
+        /* --- TICKET --- */
+        .ticket-system { margin-top: 50px; display: none; justify-content: center; }
+        .ticket-system.active { display: flex; }
+        .ticket-container {
+            width: 600px; background: #000; border-left: 5px solid var(--accent);
+            padding: 40px; display: flex; justify-content: space-between;
+        }
+
+        @keyframes pulseStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     </style>
 </head>
 <body>
@@ -143,7 +139,6 @@
     <nav class="ethos-navbar">
         <div class="nav-content">
             <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="Ethos RP"></a></div>
-            
             <ul class="nav-links">
                 <li><a href="index.html">Start</a></li>
                 <li><a href="regulamin.html">Regulamin</a></li>
@@ -151,62 +146,116 @@
                 <li><a href="#" class="locked-link">Whitelist</a></li>
                 <li><a href="#">Sklep</a></li>
             </ul>
-
             <div class="nav-right-side">
                 <div class="wl-status-box">
                     <span class="wl-label">SYSTEM STATUS</span>
                     <div class="wl-value"><div class="status-dot"></div> WHITELIST: OFF</div>
                 </div>
-                <a href="regulamin-dc.html" class="btn-discord">Discord Rules</a>
+                <a href="LINK_DO_TWOJEGO_ZAPROSZENIA" target="_blank" class="btn-discord">DISCORD</a>
             </div>
         </div>
     </nav>
 
     <header class="hero">
         <h1>ETHOS RP</h1>
-        <p style="letter-spacing: 10px; color: var(--silver); font-weight: 200; text-transform: uppercase;">Gdzie jakość spotyka wolność</p>
-        <a href="#manifestoCard" class="scroll-hint">przewiń w dół i przeczytaj o nas</a>
+        <p style="letter-spacing: 10px; color: var(--silver); text-transform: uppercase;">Gdzie jakość spotyka wolność</p>
     </header>
 
     <section class="manifesto-section">
         <div class="manifesto-card" id="manifestoCard">
-            <div style="text-align: center; margin-bottom: 70px;">
-                <h2 style="font-family: 'Syncopate', sans-serif; font-size: 2rem; letter-spacing: 12px; color: #fff;">NASZA FILOZOFIA</h2>
-            </div>
             <div class="features-grid">
-                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="feature-item">
                     <h3>ELITARNY OPEN</h3>
-                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Brak Whitelist nie oznacza braku zasad.</p>
+                    <p>Brak Whitelist nie oznacza braku zasad.</p>
                 </div>
-                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="feature-item">
                     <h3>SILNIK EMOCJI</h3>
-                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Autorskie rozwiązania napędzają rozgrywkę.</p>
+                    <p>Autorskie rozwiązania napędzają Twoją rozgrywkę.</p>
                 </div>
-                <div class="feature-item" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="feature-item">
                     <h3>TWOJA DEFINICJA</h3>
-                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 20px; line-height: 1.6;">Ty ustalasz zasady swojej historii.</p>
+                    <p>Ty ustalasz zasady swojej historii.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="path-section">
+        <h2 style="font-family: 'Syncopate'; letter-spacing: 10px;">WYBIERZ SWOJĄ ŚCIEŻKĘ</h2>
+        <div class="path-grid">
+            <div class="path-card" onclick="selectPath('CYWIL', '# silver', 'LEGAL')">
+                <h3>CYWIL</h3>
+            </div>
+            <div class="path-card" onclick="selectPath('FRAKCJA', '#2563eb', 'SERVICE')">
+                <h3>FRAKCJA</h3>
+            </div>
+            <div class="path-card" onclick="selectPath('CRIME', '#dc2626', 'ILLEGAL')">
+                <h3>CRIME</h3>
+            </div>
+        </div>
+
+        <div id="ticket" class="ticket-system">
+            <div class="ticket-container" id="t-side">
+                <div class="t-main">
+                    <h2 id="t-path">PATH</h2>
+                    <p id="t-id-code">#ID-0000</p>
+                    <p id="t-status">STATUS</p>
+                </div>
+                <button id="claim-btn" style="padding: 10px 20px; border: none; cursor: pointer; color: white;">WYBIERZ</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <h2 style="font-family: 'Syncopate'; letter-spacing: 10px;">ADMINISTRACJA</h2>
+        <div class="team-grid">
+            <div class="team-card" onclick="toggleCard(this)">
+                <div class="team-img"></div>
+                <div class="team-info">
+                    <h4>ZARZĄD</h4>
+                    <p>MemorialLink</p>
+                </div>
+            </div>
+            <div class="team-card" onclick="toggleCard(this)">
+                <div class="team-img"></div>
+                <div class="team-info">
+                    <h4>ZARZĄD</h4>
+                    <p>Osoba 2</p>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // Animacje ujawniania sekcji
+        // Reveal Manifesto
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal'); });
-        }, { threshold: 0.15 });
-        
-        const card = document.getElementById('manifestoCard');
-        if(card) observer.observe(card);
+        }, { threshold: 0.1 });
+        observer.observe(document.getElementById('manifestoCard'));
 
-        // Efekt nachylenia (tilt)
-        function tilt(e, el) {
-            const rect = el.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            el.style.transform = `rotateX(${y * 15}deg) rotateY(${x * 15}deg)`;
+        // Path Selection
+        function selectPath(name, color, status) {
+            document.querySelectorAll('.path-card').forEach(c => c.classList.remove('active'));
+            const ticket = document.getElementById('ticket');
+            ticket.classList.add('active');
+            document.getElementById('t-path').innerText = name;
+            document.getElementById('t-path').style.color = color;
+            document.getElementById('t-status').innerText = status;
+            
+            const idElement = document.getElementById('t-id-code');
+            let ticks = 0;
+            const interval = setInterval(() => {
+                idElement.innerText = `#${name.charAt(0)}-${Math.floor(1000 + Math.random() * 9000)}`;
+                if (++ticks > 12) clearInterval(interval);
+            }, 40);
         }
-        function resetTilt(el) { el.style.transform = `rotateX(0deg) rotateY(0deg)`; }
+
+        // Team Toggle
+        function toggleCard(card) {
+            const isExpanded = card.classList.contains('expanded');
+            document.querySelectorAll('.team-card').forEach(c => c.classList.remove('expanded'));
+            if (!isExpanded) card.classList.add('expanded');
+        }
     </script>
 </body>
 </html>
