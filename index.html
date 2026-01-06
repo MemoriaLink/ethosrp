@@ -47,20 +47,21 @@
         }
         .nav-links a:hover:not(.locked-link) { color: var(--accent); }
 
-        /* --- BLOKADA WHITELISTY --- */
-        .locked-link {
-            color: var(--locked) !important;
-            cursor: not-allowed !important;
-            pointer-events: none;
-            opacity: 0.5;
-        }
+        .locked-link { color: var(--locked) !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
 
+        /* --- DISCORD BTN & COUNTER --- */
+        .discord-wrapper { display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .btn-discord { 
             font-family: 'Syncopate', sans-serif; font-size: 0.65rem; padding: 10px 20px; 
             border: 1px solid var(--accent); color: white; text-decoration: none; 
             transition: 0.4s; background: rgba(168, 85, 247, 0.05); 
         }
         .btn-discord:hover { background: var(--accent); box-shadow: 0 0 20px var(--accent); }
+        #discord-counter { 
+            font-family: 'Syncopate', sans-serif; font-size: 0.5rem; color: var(--accent); 
+            opacity: 0.8; letter-spacing: 1.5px; transition: opacity 0.5s ease;
+            text-shadow: 0 0 8px var(--accent);
+        }
 
         /* --- LANDING GATE --- */
         #landing-gate {
@@ -95,27 +96,19 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* --- HERO & SCROLL INDICATOR --- */
+        /* --- HERO --- */
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 100px; position: relative; }
         .hero h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(2.2rem, 8vw, 4.5rem); letter-spacing: clamp(8px, 2vw, 15px); }
         #typewriter { letter-spacing: 5px; color: var(--silver); text-transform: uppercase; font-size: clamp(0.6rem, 2vw, 0.8rem); margin-top: 10px; }
-
-        .scroll-indicator {
-            position: absolute; bottom: 30px; left: 50%;
-            transform: translateX(-50%); display: flex; flex-direction: column;
-            align-items: center; gap: 10px; text-decoration: none; color: white;
-            transition: 0.3s; cursor: pointer;
-        }
+        
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; }
         .scroll-text { font-family: 'Syncopate', sans-serif; font-size: 0.55rem; letter-spacing: 4px; color: var(--accent); }
         .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollLineAnim 2s infinite; }
         @keyframes scrollLineAnim { 0% { height: 0; opacity: 0; } 50% { height: 60px; opacity: 1; } 100% { height: 60px; opacity: 0; transform: translateY(20px); } }
 
-        /* --- FILOZOFIA (IKONY I KARTY) --- */
+        /* --- FILOZOFIA --- */
         .manifesto-section { padding: 100px 5%; text-align: center; }
-        .features-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; width: 100%; max-width: 1400px; margin: 50px auto; 
-        }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; max-width: 1400px; margin: 50px auto; }
         .feature-card { height: 350px; perspective: 1000px; cursor: pointer; }
         .feature-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
         .feature-card.flipped .feature-inner { transform: rotateY(180deg); }
@@ -126,15 +119,10 @@
             background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
         }
         .feature-back { transform: rotateY(180deg); background: rgba(168, 85, 247, 0.05); }
-        
         .icon-container { width: 60px; height: 60px; margin-bottom: 20px; filter: drop-shadow(0 0 8px var(--accent)); animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* --- WYDARZENIA & ADMINISTRACJA --- */
-        .news-section { padding: 80px 5%; text-align: center; }
-        .news-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1200px; margin: 40px auto; }
-        .news-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; text-align: left; }
-        
+        /* --- ADMINISTRACJA --- */
         .team-section { padding: 80px 5%; text-align: center; }
         .team-grid { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
         .team-card { width: 300px; background: var(--glass); border-radius: 20px; border: 1px solid var(--glass-border); overflow: hidden; }
@@ -142,13 +130,13 @@
         .team-img-container img { width: 100%; height: 100%; object-fit: cover; }
         .team-info { padding: 20px; font-family: 'Syncopate', sans-serif; font-size: 0.8rem; }
 
-        /* --- MOBILE FIXES --- */
+        /* --- MOBILE --- */
         @media (max-width: 950px) {
             .nav-content { flex-direction: column; gap: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px 15px; }
-            .features-grid, .news-grid { grid-template-columns: 1fr; }
-            .hero { padding-top: 180px; }
-            .scroll-indicator { display: none; } /* Ukrywamy na małych ekranach dla czytelności */
+            .features-grid { grid-template-columns: 1fr; }
+            .hero { padding-top: 220px; }
+            .scroll-indicator { display: none; }
         }
     </style>
 </head>
@@ -157,7 +145,7 @@
     <div id="landing-gate">
         <div class="background-wrapper"></div>
         <div class="cyber-kompas"></div>
-        <div class="countdown-container">
+        <div class="countdown-container" style="text-align: center;">
             <span style="font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 5px; color: var(--accent);">START SERWERA ZA:</span>
             <div id="timer">00D 00H 00M 00S</div>
         </div>
@@ -178,14 +166,16 @@
                     <li><a href="javascript:void(0)" class="locked-link">Whitelist</a></li>
                     <li><a href="sklep.html">Sklep</a></li>
                 </ul>
-                <a href="https://discord.gg/j2C7JpgPRK" target="_blank" class="btn-discord">DISCORD</a>
+                <div class="discord-wrapper">
+                    <a href="https://discord.gg/j2C7JpgPRK" target="_blank" class="btn-discord">DISCORD</a>
+                    <div id="discord-counter">ŁADOWANIE...</div>
+                </div>
             </div>
         </nav>
 
         <header class="hero">
             <h1>ETHOS RP</h1>
             <div><span id="typewriter"></span><span style="color: var(--accent); animation: blink 1s infinite;">_</span></div>
-            
             <a href="#manifesto" class="scroll-indicator">
                 <span class="scroll-text">POZNAJ NAS</span>
                 <div class="scroll-line"></div>
@@ -231,20 +221,6 @@
             </div>
         </section>
 
-        <section class="news-section">
-            <h2 style="font-family: 'Syncopate'; letter-spacing: 8px;">WYDARZENIA</h2>
-            <div class="news-grid">
-                <div class="news-card">
-                    <h4 style="font-family: 'Syncopate'; color: var(--accent); margin-bottom: 10px;">KRWAWY NAPAD</h4>
-                    <p style="color: #bbb; font-size: 0.9rem;">Obława w Paleto Bay zakończona sukcesem LSPD.</p>
-                </div>
-                <div class="news-card">
-                    <h4 style="font-family: 'Syncopate'; color: var(--accent); margin-bottom: 10px;">OTWARCIE BAHAMA</h4>
-                    <p style="color: #bbb; font-size: 0.9rem;">Wielka impreza w sercu Los Santos już w ten piątek.</p>
-                </div>
-            </div>
-        </section>
-
         <section class="team-section">
             <h2 style="font-family: 'Syncopate'; letter-spacing: 8px;">ADMINISTRACJA</h2>
             <div class="team-grid">
@@ -261,6 +237,8 @@
 
     <script>
         const targetDate = new Date("Jan 17, 2026 18:00:00").getTime();
+        const SERVER_ID = "1457498881989410879"; // Twoje ID serwera
+
         function updateTimer() {
             const now = new Date().getTime();
             const diff = targetDate - now;
@@ -272,6 +250,23 @@
             document.getElementById("timer").innerHTML = `${d}D ${h}H ${m}M ${s}S`;
         }
         setInterval(updateTimer, 1000);
+
+        async function updateDiscordCounter() {
+            const counterEl = document.getElementById('discord-counter');
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+                const data = await response.json();
+                if (data && data.presence_count !== undefined) {
+                    counterEl.style.opacity = '0';
+                    setTimeout(() => {
+                        counterEl.innerText = `${data.presence_count} ONLINE`;
+                        counterEl.style.opacity = '0.8';
+                    }, 300);
+                }
+            } catch (e) { counterEl.innerText = "OFFLINE"; }
+        }
+        setInterval(updateDiscordCounter, 30000);
+        updateDiscordCounter();
 
         function unlockSite() {
             document.getElementById('landing-gate').style.opacity = '0';
