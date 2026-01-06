@@ -1,12 +1,164 @@
-<script>
-        // Ta linia "łapie" Twój formularz po jego ID
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekrutacja | Ethos RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #a855f7; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(168, 85, 247, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- TŁO CYBER-KOMPAS --- */
+        .background-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #151515 0%, #000 100%); z-index: -2;
+        }
+        .cyber-kompas {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: min(85vw, 900px); height: min(85vw, 900px);
+            border: 1px solid rgba(168, 85, 247, 0.1); border-radius: 50%;
+            z-index: -1; animation: rotateCompass 60s linear infinite; opacity: 0.12;
+        }
+        @keyframes rotateCompass {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- NAVBAR --- */
+        .ethos-navbar {
+            position: fixed; top: 0; left: 0; width: 100%; min-height: 90px;
+            z-index: 1000; display: flex; align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px);
+        }
+        .nav-content {
+            width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo img { height: 50px; filter: drop-shadow(0 0 8px var(--accent)); }
+        .nav-links { list-style: none; display: flex; gap: 25px; }
+        .nav-links a {
+            text-decoration: none; color: white;
+            font-family: 'Syncopate', sans-serif; font-size: 0.65rem;
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+        /* --- FORMULARZ --- */
+        .recruit-container { min-height: 100vh; padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
+        .recruit-header { text-align: center; margin-bottom: 50px; }
+        .recruit-header h1 { font-family: 'Syncopate'; letter-spacing: 12px; font-size: 2.2rem; text-transform: uppercase; }
+        .recruit-header p { color: var(--accent); font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 4px; margin-top: 10px; }
+
+        .glass-form {
+            width: 100%; max-width: 850px; background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 50px; border-radius: 25px; backdrop-filter: blur(25px); box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; }
+        .form-group { margin-bottom: 25px; }
+
+        label { display: block; font-family: 'Syncopate'; font-size: 0.6rem; color: var(--accent); margin-bottom: 12px; letter-spacing: 2px; }
+        
+        input, select, textarea {
+            width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
+            color: white; padding: 16px; border-radius: 10px; font-family: 'Montserrat'; outline: none; transition: 0.4s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); }
+
+        .submit-btn {
+            width: 100%; background: transparent; border: 1px solid var(--accent);
+            color: white; padding: 22px; font-family: 'Syncopate'; font-size: 0.75rem;
+            letter-spacing: 6px; cursor: pointer; transition: 0.5s; margin-top: 30px; text-transform: uppercase;
+        }
+        .submit-btn:hover { background: var(--accent); box-shadow: 0 0 40px var(--accent); transform: translateY(-3px); }
+
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .recruit-header h1 { font-size: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper"></div>
+    <div class="cyber-kompas"></div>
+
+    <nav class="ethos-navbar">
+        <div class="nav-content">
+            <div class="nav-logo"><a href="index.html"><img src="ethos-removebg-preview.png" alt="Ethos RP"></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">START</a></li>
+                <li><a href="regulamin.html">REGULAMIN</a></li>
+                <li><a href="rekrutacja.html" style="color: var(--accent);">REKRUTACJA</a></li>
+                <li><a href="sklep.html">SKLEP</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="recruit-container">
+        <div class="recruit-header">
+            <h1>DOŁĄCZ DO NAS</h1>
+            <p>SYSTEM REKRUTACJI ETHOS RP</p>
+        </div>
+
+        <div class="glass-form">
+            <form id="recruitmentForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>WYBIERZ FRAKCJĘ</label>
+                        <select id="faction" required>
+                            <option value="" disabled selected>Wybierz...</option>
+                            <option value="LSPD">LSPD (Policja)</option>
+                            <option value="EMS">EMS (Medycy)</option>
+                            <option value="LSC">LSC (Mechanicy)</option>
+                            <option value="SUPPORT">Ekipa Serwera</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>TWOJE DISCORD ID</label>
+                        <input type="text" id="discord_id" placeholder="np. 282148782012137472" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>WIEK (OOC)</label>
+                        <input type="number" id="age" min="15" required>
+                    </div>
+                    <div class="form-group">
+                        <label>STAŻ W RP</label>
+                        <input type="text" id="experience_time" placeholder="np. 1.5 roku" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>OPISZ SWOJE DOŚWIADCZENIE / MOTYWACJĘ</label>
+                    <textarea id="motivation" rows="6" placeholder="Dlaczego Ty? Gdzie wcześniej grałeś?" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">WYŚLIJ APLIKACJĘ</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
         document.getElementById('recruitmentForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // To zatrzymuje przeładowanie strony
+            e.preventDefault();
             
-            // --- TUTAJ WSTAWIASZ ADRES SWOJEGO BOTA ---
+            // Adres Twojego bota na Hostero
             const botURL = "http://37.221.94.187:3000/apply"; 
 
-            // Tutaj zbieramy dane z pól tekstowych
             const data = {
                 dID: document.getElementById('discord_id').value,
                 faction: document.getElementById('faction').value,
@@ -15,24 +167,25 @@
                 motivation: document.getElementById('motivation').value
             };
 
-            // Ta funkcja "puka" do Twojego bota na Hostero
             fetch(botURL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                mode: 'cors', // Ważne dla strony na GitHubie!
+                mode: 'cors',
                 body: JSON.stringify(data)
             })
             .then(response => {
                 if(response.ok) {
-                    alert("✅ PODANIE WYSŁANE DO ZARZĄDU!");
+                    alert("✅ PODANIE WYSŁANE!\nSprawdź kanał rekrutacji na Discordzie.");
                     window.location.href = "index.html";
                 } else {
-                    alert("❌ Błąd serwera bota. Sprawdź konsolę na Hostero.");
+                    alert("❌ Serwer bota odrzucił połączenie. Sprawdź czy port 3000 jest otwarty.");
                 }
             })
             .catch(error => {
                 console.error('Błąd:', error);
-                alert("❌ Nie udało się połączyć z botem. Upewnij się, że bot na Hostero działa i port 3000 jest otwarty.");
+                alert("❌ Nie można połączyć się z botem (IP: 37.221.94.187).\nUpewnij się, że bot na Hostero jest włączony.");
             });
         });
     </script>
+</body>
+</html>
