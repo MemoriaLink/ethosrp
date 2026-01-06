@@ -1,0 +1,38 @@
+<script>
+        // Ta linia "łapie" Twój formularz po jego ID
+        document.getElementById('recruitmentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // To zatrzymuje przeładowanie strony
+            
+            // --- TUTAJ WSTAWIASZ ADRES SWOJEGO BOTA ---
+            const botURL = "http://37.221.94.187:3000/apply"; 
+
+            // Tutaj zbieramy dane z pól tekstowych
+            const data = {
+                dID: document.getElementById('discord_id').value,
+                faction: document.getElementById('faction').value,
+                age: document.getElementById('age').value,
+                experience: document.getElementById('experience_time').value,
+                motivation: document.getElementById('motivation').value
+            };
+
+            // Ta funkcja "puka" do Twojego bota na Hostero
+            fetch(botURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors', // Ważne dla strony na GitHubie!
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert("✅ PODANIE WYSŁANE DO ZARZĄDU!");
+                    window.location.href = "index.html";
+                } else {
+                    alert("❌ Błąd serwera bota. Sprawdź konsolę na Hostero.");
+                }
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                alert("❌ Nie udało się połączyć z botem. Upewnij się, że bot na Hostero działa i port 3000 jest otwarty.");
+            });
+        });
+    </script>
